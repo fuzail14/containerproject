@@ -1,7 +1,13 @@
+import 'dart:typed_data';
+
+import 'package:assets_audio_player/assets_audio_player.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
+import 'package:newproject/Custom_Row.dart';
+import 'package:newproject/containerController.dart';
 import 'package:newproject/switch_theme_button.dart';
 
 class ContainersClass extends StatefulWidget {
@@ -12,84 +18,142 @@ class ContainersClass extends StatefulWidget {
 }
 
 class _ContainersClassState extends State<ContainersClass> {
-  int selc = 0;
+  bool isPlaying = false;
+
+  final AssetsAudioPlayer audioPlayer = AssetsAudioPlayer();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        SwitchThemeButton(),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                if (selc == 0) {
-                  selc = 0;
-                } else
-                  selc = 1;
-              });
-            },
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.120, //137
-              width: MediaQuery.of(context).size.width * 0.230, //155
+      body: GetBuilder<containerController>(
+          init: containerController(),
+          builder: (controller) {
+            return SingleChildScrollView(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                  SwitchThemeButton(),
+                  // CustomRow(
+                  //   onTap: () {},
+                  //   onTap1: () {},
+                  //   onTap2: () {},
+                  //   onTap3: () {},
+                  //   image: Image(
+                  //       image: AssetImage(
+                  //     'assets/1R1C1ForwardCut.png',
+                  //   )),
+                  //   image1: Image(
+                  //       image: AssetImage(
+                  //     'assets/1R1C1ForwardCut.png',
+                  //   )),
+                  //   image2: Image(
+                  //       image: AssetImage(
+                  //     'assets/1R1C1ForwardCut.png',
+                  //   )),
+                  //   image3: Image(
+                  //       image: AssetImage(
+                  //     'assets/1R1C1ForwardCut.png',
+                  //   )),
+                  // ),
 
-              decoration: BoxDecoration(
-                  color: selc == 0 ? Colors.blue : Colors.green,
-                  image: DecorationImage(
-                      //fit: BoxFit.cover,
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            print("press");
+                            controller.setFlag();
 
-                      image: AssetImage(
-                    'assets/1R1C1ForwardCut.png',
-                  ))),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.120, //137
-              width: MediaQuery.of(context).size.width * 0.230, //155
+                            print(controller.flag.value);
 
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  image: DecorationImage(
-                      //fit: BoxFit.cover,
-                      image: AssetImage(
-                    'assets/1R1C1ForwardCut.png',
-                  ))),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.120, //137
-              width: MediaQuery.of(context).size.width * 0.230, //155
+                            if (isplaying) {
+                              await player.pause();
+                            } else {
+                              player.play(url);
+                            }
+                          },
+                          child: Obx(
+                            () => Container(
+                              height: MediaQuery.of(context).size.height *
+                                  0.120, //137
+                              width: MediaQuery.of(context).size.width *
+                                  0.230, //155
 
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  image: DecorationImage(
-                      // fit: BoxFit.cover,
-                      image: AssetImage(
-                    'assets/1R1C1ForwardCut.png',
-                  ))),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.120, //137
-              width: MediaQuery.of(context).size.width * 0.230, //155
+                              decoration: BoxDecoration(
+                                  color: controller.flag.value
+                                      ? Colors.blue
+                                      : Colors.green,
+                                  image: DecorationImage(
+                                      //fit: BoxFit.cover,
 
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  image: DecorationImage(
-                      //fit: BoxFit.cover,
-                      image: AssetImage(
-                    'assets/1R1C1ForwardCut.png',
-                  ))),
-            ),
-          ),
-        ]),
-      ])),
+                                      image: AssetImage(
+                                    'assets/1R1C1ForwardCut.png',
+                                  ))),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            height: MediaQuery.of(context).size.height *
+                                0.120, //137
+                            width:
+                                MediaQuery.of(context).size.width * 0.230, //155
+
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                image: DecorationImage(
+                                    //fit: BoxFit.cover,
+                                    image: AssetImage(
+                                  'assets/1R1C1ForwardCut.png',
+                                ))),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            height: MediaQuery.of(context).size.height *
+                                0.120, //137
+                            width:
+                                MediaQuery.of(context).size.width * 0.230, //155
+
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                image: DecorationImage(
+                                    // fit: BoxFit.cover,
+                                    image: AssetImage(
+                                  'assets/1R1C1ForwardCut.png',
+                                ))),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            height: MediaQuery.of(context).size.height *
+                                0.120, //137
+                            width:
+                                MediaQuery.of(context).size.width * 0.230, //155
+
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                image: DecorationImage(
+                                    //fit: BoxFit.cover,
+                                    image: AssetImage(
+                                  'assets/1R1C1ForwardCut.png',
+                                ))),
+                          ),
+                        ),
+                      ]),
+                ]));
+          }),
     );
   }
 }
